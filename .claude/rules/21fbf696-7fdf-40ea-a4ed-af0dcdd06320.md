@@ -1,0 +1,30 @@
+<rule_activation id="21fbf696-7fdf-40ea-a4ed-af0dcdd06320" title="Adopt Playwright for Browser-Based Testing and Rendering Verification: Browser Storage Navigation" applies_to="**/*">
+These rules are ALWAYS ACTIVE for all browser-based testing, UI rendering verification, and web integration test scenarios across the codebase.
+</rule_activation>
+
+### Rules
+
+- **R-PLAYWRIGHT-001** SHOULD: Browser storage and navigation tests SHOULD verify state persistence and goto operations to ensure proper rendering model behavior.
+
+### Verify
+
+```bash
+# Verify Playwright test framework adoption
+grep -r "@playwright/test" packages/*/tests --include="*.ts" --include="*.js"
+
+# Find Playwright test files
+find packages -name "*.spec.ts" -path "*/playwright/*" -type f
+
+# Verify Playwright APIs in use
+grep -r "page\.goto\|page\.screenshot\|browserContext" packages/*/tests --include="*.spec.ts" | head -20
+```
+
+**Accept when:**
+- All web integration test files import from '@playwright/test' and use Playwright APIs
+- Test files follow naming convention (*.spec.ts) and are organized in appropriate test directories
+- Screenshot tests implement CDP fallback mechanisms and storage/navigation tests verify state persistence
+- CI/CD pipeline successfully executes Playwright tests across multiple browser contexts
+
+<enforcement>
+Claude Code MUST verify Playwright adoption through automated CI/CD pipeline checks, code review processes, and static analysis tools scanning for test file patterns and import statements. Violations are flagged during code review and escalated to the Architecture Review Board for repeated violations or exception requests.
+</enforcement>
